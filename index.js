@@ -28,7 +28,7 @@ class Client {
 		return got(url, {json: true}).then(res => {
 			const items = res.body.items || [];
 
-			return items.map(item => ({
+			items.map(item => ({
 				type: item.mime,
 				width: item.image.width,
 				height: item.image.height,
@@ -42,7 +42,14 @@ class Client {
 				description: item.snippet,
 				parentPage: item.image.contextLink
 			}));
-		});
+
+    	const payload = {
+    	  totalResults: res.body.searchInformation.totalResults,
+    	  items: items,
+    	}
+
+    	return payload
+			});
 	}
 
 	buildQuery(query, options) {
